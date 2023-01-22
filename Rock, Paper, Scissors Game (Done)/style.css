@@ -1,0 +1,30 @@
+.score {
+    display: block;
+}
+
+.score p {
+    text-align: center;
+    font-size: larger;
+}
+
+.playerPlace {
+    width: 5em;
+    gap: 1em;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.playerPlace button {
+    width: 90px;
+    height: 90px;
+}
+
+.opponentPlace {
+    display: inline;
+    float: right;
+}
+
+.opponentPlace button {
+    width: 90px;
+    height: 90px;
+}
