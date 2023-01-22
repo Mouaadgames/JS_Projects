@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes App</title>
+    <script defer src="./main.js"></script>
+</head>
+
+<body>
+    <header>
+        <button onclick="switchTo(0)">1Recipe</button>
+        <button onclick="switchTo(1)">Recipe of disaster</button>
+        <button onclick="switchTo(2)">3Recipe</button>
+    </header>
+    <div class="recipiePlace">
+        <p class="para">test recipe</p>
+    </div>
+</body>
+<style>
+    header {
+        padding-inline: 15px;
+        display: grid;
+        gap: 5px;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        /* minmax(300px 500px);*/
+    }
+
+    .recipiePlace {
+        background-color: #CCC;
+        height: 60vh;
+        margin-top: 30px;
+        border: solid;
+        border-radius: 15px;
+    }
+
+    p {
+        margin: 5px;
+    }
+</style>
+
+</html>
