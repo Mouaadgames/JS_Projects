@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <script defer src="./main.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="result">
+            <div class="formula">the formula here</div>
+            <div class="enter_result">your Result</div>
+        </div>
+
+        <div class="keyPad">
+            <button onclick="keyPress(0)">)</button> <button onclick="keyPress(1)">!</button> <button
+                onclick="keyPress(2)">C</button> <button onclick="keyPress(3)">Del</button>
+            <button onclick="keyPress(4)">(</button><button onclick="keyPress(5)">x²</button><button
+                onclick="keyPress(6)">²√x</button><button onclick="keyPress(7)">➗</button>
+            <button onclick="keyPress(8)">7</button> <button onclick="keyPress(9)">8</button> <button
+                onclick="keyPress(10)">9</button> <button onclick="keyPress(11)">✖</button>
+            <button onclick="keyPress(12)">4</button> <button onclick="keyPress(13)">5</button> <button
+                onclick="keyPress(14)">6</button> <button onclick="keyPress(15)">➖</button>
+            <button onclick="keyPress(16)">1</button> <button onclick="keyPress(17)">2</button> <button
+                onclick="keyPress(18)">3</button> <button onclick="keyPress(19)">➕</button>
+            <button style="border-bottom-left-radius: 12px ;" onclick="keyPress(20)">∓</button> <button
+                onclick="keyPress(21)">0</button> <button onclick="keyPress(22)">.</button> <button
+                onclick="keyPress(23)" style="border-bottom-right-radius: 12px ;">=</button>
+        </div>
+    </div>
+</body>
+
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 485px;
+        border-radius: 15px;
+        border: solid;
+        padding: 1px;
+        background-color: #BBB;
+
+    }
+
+    /* the result place*/
+    .result {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        background-color: #444;
+        padding-block: 15px;
+        height: 82px;
+    }
+
+    .result * {
+        text-align: right;
+        color: #fff;
+        padding: 7px 10px;
+    }
+
+    .formula {
+        opacity: 0.7;
+    }
+
+    .enter_result {
+        font-size: xx-large;
+    }
+
+    /*the key board place*/
+    .keyPad {
+        padding-top: 2px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+        gap: 2px;
+    }
+
+    button {
+        border-radius: 5px;
+        height: 60px;
+        border: none;
+    }
+</style>
+
+</html>
