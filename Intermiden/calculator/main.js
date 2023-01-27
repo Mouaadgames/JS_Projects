@@ -1,6 +1,7 @@
 let formula = ""
 let inputplace = ""
 let userInput = ""
+let openBarkets = 0
 const Code = [
     ")", "!", "C", "Del",
     "(", "²", "²√(", "/",
@@ -44,7 +45,7 @@ function addToInputPlace(input) {
         }
     }
     else {
-        //for del the - sigh if it exist just for cheking the Zero
+        //for deleting the - sigh if it exist just for cheking the Zero
         let hasMinus = inputplace[0] === "-"
         let check = hasMinus ? inputplace.slice(1) : inputplace
         if (check.length === 1 && check[0] === "0") {
@@ -68,40 +69,67 @@ let firstOfLastSqrtS = 0
 let firstInS = true
 function addToFormula(input) {
     if (input === "²√(") {
-        firstOfLastSqrtS = firstInS ? formula.length : firstOfLastSqrtS
-        firstInS = false
-        if (addedOpperation || formula.length == 0) {
-            addedOpperation = false
-            formula += `²√(${inputplace !== "" ? inputplace : "0"})`
-            inputplace = ""
-        }
-        else {
-            if (inputplace === "") {
-                formula = `${formula.slice(0, firstOfLastSqrtS)}²√(${formula.slice(firstOfLastSqrtS)})`
-            }
-            else {
-                formula = formula.slice(0, firstOfLastSqrtS)
-                inputplace = ""
-            }
-        }
+        // firstOfLastSqrtS = firstInS ? formula.length : firstOfLastSqrtS
+        // firstInS = false
+        // if (addedOpperation || formula.length == 0) {
+        //     addedOpperation = false
+        //     formula += `²√(${inputplace !== "" ? inputplace : "0"})`
+        //     inputplace = ""
+        // }
+        // else {
+        //     if (inputplace === "") {
+        //         formula = `${formula.slice(0, firstOfLastSqrtS)}²√(${formula.slice(firstOfLastSqrtS)})`
+        //     }
+        //     else {
+        //         formula = formula.slice(0, firstOfLastSqrtS)
+        //         inputplace = ""
+        //     }
+        // }
     }
-    else if (["/", "x", "-", "+", "!"].includes(input)) {
-        console.log(input, inputplace,)
+    else if (["/", "x", "-", "+"/*, "!"*/].includes(input)) {
+        console.log(input, inputplace)
+
         if (inputplace === "") {
+            // for empty formula 'expretion"
+            if (formula === "" && (["/", "x"].includes(input) || input === "+")) {
+                return
+            }
+            else if (formula.length === 1 && formula.charAt(0) === "-" && input === "+") {
+                formula = ""
+                return
+            }
+            // change the latest operation || adding it
             if (["/", "x", "-", "+"].includes(formula.charAt(formula.length - 1))) {
                 formula = formula.slice(0, formula.length - 1) + input
             }
+            else {
+                formula += input
+            }
         }
-        else {
+        else { // if no operation is set before puting a num all will be deleted
             if (formula.charAt(formula.length - 1) === ")") {
-                formula = formula.slice(0, firstOfLastSqrtS)
+                formula = "" /*formula.slice(0, firstOfLastSqrtS)*/
             }
             formula += inputplace + input
             inputplace = ""
         }
     }
-    else {
-
+    else if (["(", ")"].includes(input)) {
+        if (input === "(") {
+            if (formula.charAt(formula.length - 1) === ")") {
+                formula = ""
+            }
+            formula += input
+            openBarkets++
+        }
+        else if (openBarkets > 0) { // bracket closes ")")
+            if (["/", "x", "-", "+"].includes(formula.charAt(formula.length - 1)) && inputplace === "") {
+                formula = formula.slice(0, formula.length - 1)
+            }
+            formula += inputplace + input
+            inputplace = ""
+            openBarkets--
+        }
     }
 }
 
@@ -114,29 +142,133 @@ function clear() {
     inputplace = ""
     userInput = ""
 }
-function calculate() {
-    //
-}
 
-function add() {
-}
-function add() {
-}
-function add() {
-}
-function add() {
-}
 
-function add() {
-}
-function add() {
-}
-function add() {
-}
-function add() {
-}
 
-function add() {
-}
-function add() {
+
+formula = "2.33356x(9--9)x9.024/(((8-9)/5)x6)+-3x(-6.5/9)"
+calculate(formula)
+function calculate(formulaToCalculate) {
+    /*
+    1) Brakets ()  "array"
+    2) multiplication and Divition take the sing of it 
+    3) sum and difrence
+    */
+    let OrderOfOperation = []
+    let nothingFound = true;
+    let BraketsNum = 0
+    let inBraket = false
+    let workingExpretion = ""
+    // working formula "2.33356x(9--9)x9.024/((8-9)x6)+-3x(-6.5/9)"
+    // // console.log(parseBrakets("2.33356x(9--9)x9.024/((8-9)x6)+-3x(-6.5/9)"))
+    // ['9--9|8:13', '(8-9)x6|21:29', '-6.5/9|34:41']
+    OrderOfOperation = OrderOfOperation.reverse()
+    for (elem of OrderOfOperation) {
+        replaceByIndex(elem, calExpretion(elem.split("|")[0]))
+    }
+
+
+
+
+
+
+
+
+    replaceByIndex(OrderOfOperation)
+    function parseBrakets(formulaToParse) {
+        nothingFound = true
+        let localOrderOfOperation = []
+        let startIndex = 0
+        for (let i = 0; i < formulaToParse.length; i++) {
+            const character = formulaToParse[i]
+            if (character === "(") {
+                if (BraketsNum === 0) {
+                    startIndex = i
+                }
+                inBraket = true
+                BraketsNum++
+                nothingFound = false
+            }
+            else if (character === ")") {
+                BraketsNum--
+                if (BraketsNum == 0) {
+                    inBraket = false
+                    workingExpretion += character
+
+                }
+            }
+            if (inBraket) {
+                workingExpretion += character
+            }
+            else if (!inBraket && workingExpretion !== "") {
+                localOrderOfOperation.push(`${workingExpretion.slice(1, workingExpretion.length - 1)}|${startIndex}:${i}`)
+                workingExpretion = ""
+            }
+        }
+        return localOrderOfOperation
+    }
+
+    OrderOfOperation = parseBrakets(formula)
+    for (let i = 0; i < OrderOfOperation.length; i++) {
+        const expretion = OrderOfOperation[i]
+        if (expretion.includes("(")) {
+            let arrayToConcat = parseBrakets(expretion)
+            for (let j = 0; j < arrayToConcat.length; j++) {
+                arrayToConcat[j] += `|${i}`
+            }
+            OrderOfOperation.concat(arrayToConcat)
+        }
+    }
+
+
+
+
+
+
+
+
+    // the function calculate any two number
+    function calExpretion(expr) { // "58+42"
+        numbs = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
+
+        num1 = ""
+        num2 = ""
+        curentoperation = 0
+        for (let i = 0; i < expr.length; i++) {
+            const char = expr[i];
+            if (["/", "x", "-", "+"/*, "!"*/].includes(char)) {
+                curentoperation = char
+            }
+            else if (numbs.includes(char)) {
+                if (curentoperation === 0)
+                    num1 += char
+                else
+                    num2 += char
+            }
+        }
+        num1 = parseFloat(num1)
+        num2 = parseFloat(num2)
+        switch (curentoperation) {
+            case "/":
+                if (num2 === 0)
+                    return "0 divition error"
+                else
+                    return num1 / num2
+            case "*":
+                return num1 * num2
+            case "-":
+                return num1 - num2
+            case "+":
+                return num1 + num2
+        }
+    }
+
+    function replaceByIndex(ExpretionToReplace, replacement) {
+        const posToReplace = ExpretionToReplace.split("|")[1]
+        const posArray = posToReplace.split(":")
+        posArray = [parseInt(posArray[0]), parseInt(posArray[1])]
+        formula = formula.slice(0, posArray[0]) +
+            replacement +
+            formula.slice(posArray[1], formula.length)
+    }
 }
