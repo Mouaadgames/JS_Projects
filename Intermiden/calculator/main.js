@@ -10,11 +10,14 @@ const Code = [
     1, 2, 3, "+",
     "∓", 0, ".", "="
 ]
+const numbs = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
+
 const NoneInterupting = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ".", "∓", "Del"]
 const Interupting = [")", "!", "(", "²", "²√(", "/", "x", "-", "+"]
 
 const FormulaElm = document.querySelector(".formula")
 const InputPlaceElem = document.querySelector(".enter_result")
+const Operation = ["/", "x", "-", "+"/*, "!"*/]
 function keyPress(key) {
     userInput = Code[key]
     if (NoneInterupting.includes(userInput)) {
@@ -86,7 +89,7 @@ function addToFormula(input) {
         //     }
         // }
     }
-    else if (["/", "x", "-", "+"/*, "!"*/].includes(input)) {
+    else if (Operation.includes(input)) {
         console.log(input, inputplace)
 
         if (inputplace === "") {
@@ -146,7 +149,7 @@ function clear() {
 
 
 
-formula = "2.33356x(9--9)x9.024/(((8-9)/5)x6)+-3x(-6.5/9)"
+formula = "2.33356x(9--9+6)x9.024/((8-9)x(6+3))+-3x(-6.5/9)"
 calculate(formula)
 function calculate(formulaToCalculate) {
     /*
@@ -159,18 +162,13 @@ function calculate(formulaToCalculate) {
     let BraketsNum = 0
     let inBraket = false
     let workingExpretion = ""
-    // working formula "2.33356x(9--9)x9.024/((8-9)x6)+-3x(-6.5/9)"
+    // working formula "2.33356x(9--9+6)x9.024/((8-9)x(6+3))+-3x(-6.5/9)"
     // // console.log(parseBrakets("2.33356x(9--9)x9.024/((8-9)x6)+-3x(-6.5/9)"))
     // ['9--9|8:13', '(8-9)x6|21:29', '-6.5/9|34:41']
     OrderOfOperation = OrderOfOperation.reverse()
     for (elem of OrderOfOperation) {
         replaceByIndex(elem, calExpretion(elem.split("|")[0]))
     }
-
-
-
-
-
 
 
 
@@ -219,24 +217,61 @@ function calculate(formulaToCalculate) {
             OrderOfOperation.concat(arrayToConcat)
         }
     }
+    OrderOfOperation.reverse()
+
+    for (expretion of OrderOfOperation) {
+        let devlopedExpretion = expretion.split("|")
+
+    }
 
 
+    //3+-56x-97--5/8
+    function calExpretionByOreder(expr) {
+        let multiplication_Divition_Part = true
+        let minusFound = false
+        let num1 = ""
+        let numOfStepsBack = 0
+        let numOfStepsForw = 0
+        let num2 = ""
 
-
-
+        for (let i = 0; i < expr.length; i++) {
+            const char = expr[i];
+            if (multiplication_Divition_Part) {
+                if (["x", "/"].includes(char)) {
+                    oprIndex = i
+                    curentChar = expr.charAt(oprIndex - 1)
+                    while (!["/", "x", "+"/*, "!"*/].includes(curentChar)) {
+                        numOfStepsBack++
+                        curentChar = expr.charAt(oprIndex - 1 - numOfStepsBack)
+                        if (curentChar === "-") {
+                            minusFound = true
+                        }
+                        if (minusFound && Operation.includes(curentChar)) {
+                            numOfStepsBack--
+                            break
+                        }
+                    }
+                    while (!["/", "x", "+"/*, "!"*/].includes(curentChar)) {
+                        numOfStepsForw++
+                    }
+                }
+            }
+        }
+        num1 += expr.slice()
+    }
 
 
 
     // the function calculate any two number
+    //ex : "3+5"
     function calExpretion(expr) { // "58+42"
-        numbs = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
 
         num1 = ""
         num2 = ""
         curentoperation = 0
         for (let i = 0; i < expr.length; i++) {
             const char = expr[i];
-            if (["/", "x", "-", "+"/*, "!"*/].includes(char)) {
+            if (Operation.includes(char)) {
                 curentoperation = char
             }
             else if (numbs.includes(char)) {
