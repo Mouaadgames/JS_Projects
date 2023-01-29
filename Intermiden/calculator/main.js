@@ -34,7 +34,7 @@ function keyPress(key) {
     }
     updateUI()
 }
-
+debugger
 function addToInputPlace(input) {
     if (input === "Del") {
         inputplace = inputplace.slice(0, -1)
@@ -165,14 +165,11 @@ function calculate(formulaToCalculate) {
     // working formula "2.33356x(9--9+6)x9.024/((8-9)x(6+3))+-3x(-6.5/9)"
     // // console.log(parseBrakets("2.33356x(9--9)x9.024/((8-9)x6)+-3x(-6.5/9)"))
     // ['9--9|8:13', '(8-9)x6|21:29', '-6.5/9|34:41']
-    OrderOfOperation = OrderOfOperation.reverse()
-    for (elem of OrderOfOperation) {
-        replaceByIndex(elem, calExpretion(elem.split("|")[0]))
-    }
-
-
-
-    replaceByIndex(OrderOfOperation)
+    // // // OrderOfOperation = OrderOfOperation.reverse()
+    // // // for (elem of OrderOfOperation) {
+    // // //     replaceByIndex(elem, calExpretion(elem.split("|")[0]))
+    // // // }
+    // replaceByIndex(OrderOfOperation)
     function parseBrakets(formulaToParse) {
         nothingFound = true
         let localOrderOfOperation = []
@@ -206,72 +203,91 @@ function calculate(formulaToCalculate) {
         return localOrderOfOperation
     }
 
-    OrderOfOperation = parseBrakets(formula)
-    for (let i = 0; i < OrderOfOperation.length; i++) {
-        const expretion = OrderOfOperation[i]
-        if (expretion.includes("(")) {
-            let arrayToConcat = parseBrakets(expretion)
-            for (let j = 0; j < arrayToConcat.length; j++) {
-                arrayToConcat[j] += `|${i}`
-            }
-            OrderOfOperation.concat(arrayToConcat)
-        }
-    }
-    OrderOfOperation.reverse()
+    // // // OrderOfOperation = parseBrakets(formula)
+    // // // for (let i = 0; i < OrderOfOperation.length; i++) {
+    // // //     const expretion = OrderOfOperation[i]
+    // // //     if (expretion.includes("(")) {
+    // // //         let arrayToConcat = parseBrakets(expretion)
+    // // //         for (let j = 0; j < arrayToConcat.length; j++) {
+    // // //             arrayToConcat[j] += `|${i}`
+    // // //         }
+    // // //         OrderOfOperation.concat(arrayToConcat)
+    // // //     }
+    // // // }
+    // // // OrderOfOperation.reverse()
 
-    for (expretion of OrderOfOperation) {
-        let devlopedExpretion = expretion.split("|")
+    // // // for (expretion of OrderOfOperation) {
+    // // //     let devlopedExpretion = expretion.split("|")
 
-    }
+    // // // }
 
 
-    //3+-56x-97--5/8
+    //3+-56x-97--5/8+6
+    //3+5432--5/8+6
+    //3+5432-""+6
+
+    calExpretionByOreder("3+-56x-97--5/8")
     function calExpretionByOreder(expr) {
-        let multiplication_Divition_Part = true
-        let minusFound = false
-        let num1 = ""
-        let numOfStepsBack = 0
-        let numOfStepsForw = 0
-        let num2 = ""
 
-        for (let i = 0; i < expr.length; i++) {
-            const char = expr[i];
-            if (multiplication_Divition_Part) {
-                if (["x", "/"].includes(char)) {
-                    oprIndex = i
-                    curentChar = expr.charAt(oprIndex - 1)
-                    while (!["/", "x", "+"/*, "!"*/].includes(curentChar)) {
-                        numOfStepsBack++
-                        curentChar = expr.charAt(oprIndex - 1 - numOfStepsBack)
-                        if (curentChar === "-") {
-                            minusFound = true
-                        }
-                        if (minusFound && Operation.includes(curentChar)) {
-                            numOfStepsBack--
-                            break
-                        }
-                    }
-                    while (!["/", "x", "+"/*, "!"*/].includes(curentChar)) {
-                        numOfStepsForw++
-                    }
-                }
-            }
-        }
-        num1 += expr.slice()
+        // let MultiDiv = []
+        // let multiplication_Divition_Part = true
+        // for (let i = 0; i < expr.length; i++) {
+        //     let minusFound = false
+        //     let numOfStepsBack = 0
+        //     let numOfStepsForw = 0
+        //     const char = expr[i];
+        //     if (multiplication_Divition_Part) {
+        //         if (["x", "/"].includes(char)) {
+        //             oprIndex = i
+        //             let curentChar = expr.charAt(oprIndex)
+        //             while (!["/", "x", "+"/*, "!"*/].includes(curentChar)) {
+        //                 numOfStepsBack++
+        //                 curentChar = expr.charAt(oprIndex - numOfStepsBack)
+        //                 if (minusFound && Operation.includes(curentChar)) {
+        //                     numOfStepsBack--
+        //                     break
+        //                 }
+        //                 if (curentChar === "-") {
+        //                     minusFound = true
+        //                 }
+        //                 console.log("e")
+        //             }
+        //             while (!["/", "x", "+"/*, "!"*/].includes(curentChar)) {
+        //                 const curentChar = expr.charAt(oprIndex + 1 + numOfStepsForw)
+        //                 if (curentChar === "-") {
+        //                     if (numOfStepsForw === 0) {
+        //                         numOfStepsForw++
+        //                     } else {
+        //                         break
+        //                     }
+        //                 }
+        //                 //3+-56x-97--5/8
+        //                 if (Operation.includes(curentChar) || curentChar === "") {
+        //                     break
+        //                 }
+        //                 numOfStepsForw++
+
+        //                 console.log("e")
+
+        //             } // while loop
+        //         } // if statement ["x","/"]
+        //     }//if statement check part
+        //     MultiDiv.push(expr.slice(numOfStepsBack, numOfStepsForw))
+        // }//for loop over expretion
     }
 
 
 
     // the function calculate any two number
     //ex : "3+5"
-    function calExpretion(expr) { // "58+42"
+    function calExpretion(expr) { // "-58+-42"
 
         num1 = ""
         num2 = ""
         curentoperation = 0
         for (let i = 0; i < expr.length; i++) {
             const char = expr[i];
-            if (Operation.includes(char)) {
+            if (Operation.includes(char) && i !== 0 && curentoperation === 0) {
                 curentoperation = char
             }
             else if (numbs.includes(char)) {
