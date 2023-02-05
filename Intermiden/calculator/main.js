@@ -229,51 +229,7 @@ function calculate(formulaToCalculate) {
     calExpretionByOreder("3+-56x-97--5/8")
     function calExpretionByOreder(expr) {
 
-        // let MultiDiv = []
-        // let multiplication_Divition_Part = true
-        // for (let i = 0; i < expr.length; i++) {
-        //     let minusFound = false
-        //     let numOfStepsBack = 0
-        //     let numOfStepsForw = 0
-        //     const char = expr[i];
-        //     if (multiplication_Divition_Part) {
-        //         if (["x", "/"].includes(char)) {
-        //             oprIndex = i
-        //             let curentChar = expr.charAt(oprIndex)
-        //             while (!["/", "x", "+"/*, "!"*/].includes(curentChar)) {
-        //                 numOfStepsBack++
-        //                 curentChar = expr.charAt(oprIndex - numOfStepsBack)
-        //                 if (minusFound && Operation.includes(curentChar)) {
-        //                     numOfStepsBack--
-        //                     break
-        //                 }
-        //                 if (curentChar === "-") {
-        //                     minusFound = true
-        //                 }
-        //                 console.log("e")
-        //             }
-        //             while (!["/", "x", "+"/*, "!"*/].includes(curentChar)) {
-        //                 const curentChar = expr.charAt(oprIndex + 1 + numOfStepsForw)
-        //                 if (curentChar === "-") {
-        //                     if (numOfStepsForw === 0) {
-        //                         numOfStepsForw++
-        //                     } else {
-        //                         break
-        //                     }
-        //                 }
-        //                 //3+-56x-97--5/8
-        //                 if (Operation.includes(curentChar) || curentChar === "") {
-        //                     break
-        //                 }
-        //                 numOfStepsForw++
-
-        //                 console.log("e")
-
-        //             } // while loop
-        //         } // if statement ["x","/"]
-        //     }//if statement check part
-        //     MultiDiv.push(expr.slice(numOfStepsBack, numOfStepsForw))
-        // }//for loop over expretion
+        
     }
 
 
